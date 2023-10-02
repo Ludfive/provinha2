@@ -17,6 +17,24 @@ export default function TabelaClientes(props) {
 
     }
 
+    /* function verificaCliente(cliente){
+        props.listaClientes(cliente);
+        let i =0;
+        while(i<listaClientes.length && cliente!==listaClientes[i].cliente)
+            i++;
+        if(i!=listaClientes.length)
+        {
+            formValidado.classList.remove('was-valited');
+            alert("Nome de cliente já existente!");
+            return true;
+        }
+        else    
+            return false;
+    
+    } */
+    
+    
+
 
     return (
         <Container>
