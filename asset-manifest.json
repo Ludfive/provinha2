@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/provinha/static/css/main.99e4cf39.css",
+    "main.js": "/provinha/static/js/main.3ffce941.js",
+    "index.html": "/provinha/index.html",
+    "main.99e4cf39.css.map": "/provinha/static/css/main.99e4cf39.css.map",
+    "main.3ffce941.js.map": "/provinha/static/js/main.3ffce941.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.99e4cf39.css",
+    "static/js/main.3ffce941.js"
+  ]
+}
