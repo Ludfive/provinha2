@@ -23,15 +23,23 @@ export default function FormCadCliente(props) {
     }
 
     function manipularSubmissao(e){
+        var teste = 0;
         const form = e.currentTarget; 
         if (form.checkValidity()){
-            //todos os campos preenchidos
-            //mandar os dados para o backend
+    
             if(!props.modoEdicao){
-                props.setListaClientes([...props.listaClientes,cliente]);
-                props.setMensagem('Cliente incluído com sucesso');
-                props.setTipoMensagem('success');
-                props.setMostrarMensagem(true);
+                for(var i = 0; i < props.listaClientes.length; i++)
+                    if (props.listaClientes[i].cpf === cliente.cpf)
+                        teste = teste + 1;
+                if (teste === 0){
+                    props.setListaClientes([...props.listaClientes,cliente]);
+                    props.setMensagem('Cliente incluído com sucesso');
+                    props.setTipoMensagem('success');
+                    props.setMostrarMensagem(true);
+                }
+                    
+                else
+                    alert("Impossivel cadastrar clientes com o mesmo cpf!");
             }
             else{
                 //alterar os dados do cliente (filtra e adiciona)
@@ -40,7 +48,7 @@ export default function FormCadCliente(props) {
                 props.setModoEdicao(false);
                 props.setClienteParaEdicao(clienteVazio);                
             }
-            setCliente(clienteVazio); // ou sair da tela de formulário 
+            setCliente(clienteVazio); 
             setFormValidado(false);
         }
         else{

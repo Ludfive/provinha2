@@ -1,73 +1,75 @@
-import { useState } from "react";
 import { Button, Container, Form, Row, Col, FloatingLabel } from "react-bootstrap";
-export default function FormCadCategoria(props) {
-    //os atributos deste objeto devem estar associados aos inputs do formulários
-    const categoriaVazio = {
-        codigo:'',
-        nomeComercial:'',
-        tipo:'',
-        preco:'',
-    }
+import { useState } from "react";
+
+export default function FormCadCategorias(props) {
+    const categoriaVazia = {
+        id: '',
+        nome: '',
+        descricao: '',
+        organico: 'não orgânico',
+        ativa: true,
+        dataCriacao: new Date(),
+    };
+
     const estadoInicialCategoria = props.categoriaParaEdicao;
     const [categoria, setCategoria] = useState(estadoInicialCategoria);
     const [formValidado, setFormValidado] = useState(false);
 
-    function manipularMudancas(e){
-        const componente = e.currentTarget;
-        console.log(componente.value)
-        setCategoria({...categoria,[componente.name]:componente.value});
+    function manipularMudancas(evento) {
+        const componente = evento.currentTarget;
+        const valor = componente.type === 'checkbox' ? componente.checked : componente.value;
+        setCategoria({ ...categoria, [componente.name]: valor });
     }
 
-    function manipularSubmissao(e){
-        const form = e.currentTarget; 
-        if (form.checkValidity()){
-            //todos os campos preenchidos
-            //mandar os dados para o backend
-            if(!props.modoEdicao){
-                props.setListaCategoria([...props.listaCategoria,categoria]);
-                props.setMensagem('Categora incluída com sucesso');
-                props.setTipoMensagem('success');
-                props.setMostrarMensagem(true);
-            }
-            else{
-                //alterar os dados do categoria (filtra e adiciona)
-
-                props.setListaCategoria([...props.listaCategoria.filter((itemCategoria)=>itemCategoria.codigo !== categoria.codigo),categoria]);
+    function manipularSubmissao(evento) {
+        const form = evento.currentTarget;
+        if (form.checkValidity()) {
+            if (!props.modoEdicao) {
+                props.setListaCategorias([...props.listaCategorias, categoria]);
+                alert("Categoria cadastrada com sucesso!");
+            } else {
+                props.setListaCategorias([
+                    ...props.listaCategorias.filter((itemCategoria) => itemCategoria.id !== categoria.id),
+                    categoria
+                ]);
                 props.setModoEdicao(false);
-                props.setCategoriaParaEdicao(categoriaVazio);                
+                props.setCategoriaParaEdicao(categoriaVazia);
+                alert("Categoria alterada com sucesso!");
             }
-            setCategoria(categoriaVazio); // ou sair da tela de formulário 
+            props.setExibirFormulario(false);
+            setCategoria(categoriaVazia);
             setFormValidado(false);
-        }
-        else{
+        } else {
             setFormValidado(true);
         }
 
-        e.stopPropagation();
-        e.preventDefault();
+        evento.stopPropagation();
+        evento.preventDefault();
     }
 
     return (
-        <Container>
+        <Container style={{marginTop: '20px'}}>
             <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
                 <Row>
                     <Col>
                         <Form.Group>
                             <FloatingLabel
-                                label="CNPJ:"
+                                label="ID:"
+                                className="mb-3">
+                                <Form.Control type="text" placeholder="ID da categoria" id="id" name="id" required value={categoria.id} onChange={manipularMudancas}/>
+                            </FloatingLabel>
+                            <Form.Control.Feedback type="invalid">Informe o ID!</Form.Control.Feedback>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group>
+                            <FloatingLabel
+                                label="Nome:"
                                 className="mb-3"
                             >
-
-                                <Form.Control 
-                                    type="text" 
-                                    placeholder="000.000.000-00" 
-                                    id="cnpj" 
-                                    name="cnpj" 
-                                    value={categoria.cnpj}
-                                    onChange={manipularMudancas}
-                                    required />
+                                <Form.Control type="text" placeholder="Nome da categoria" id="nome" name="nome" required value={categoria.nome} onChange={manipularMudancas}/>
                             </FloatingLabel>
-                            <Form.Control.Feedback type="invalid">Informe o cnpj!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Informe o nome!</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -75,72 +77,51 @@ export default function FormCadCategoria(props) {
                     <Col>
                         <Form.Group>
                             <FloatingLabel
-                                label="Nome Comercial:"
+                                label="Descrição:"
                                 className="mb-3"
                             >
-                                <Form.Control 
-                                    type="text" 
-                                    placeholder="Informe o nome Comercial completo" 
-                                    id="nomeComercial" 
-                                    name="nomeComercial" 
-                                    value={categoria.nomeComercial}
-                                    onChange={manipularMudancas}
-                                    required />
+                                <Form.Control as="textarea" placeholder="Descrição da categoria" id="descricao" name="descricao" required value={categoria.descricao} onChange={manipularMudancas}/>
                             </FloatingLabel>
-                            <Form.Control.Feedback type="invalid">Informe o nomeComercial!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Informe a descrição!</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={5}>
+                    <Col md={6}>
                         <Form.Group>
-                            <FloatingLabel
-                                label="Tipo do produto:"
-                                className="mb-3"
-                            >
-                                <Form.Control 
-                                    type="text" 
-                                    placeholder="..." 
-                                    id="tipo" 
-                                    name="tipo" 
-                                    onChange={manipularMudancas}
-                                    value={categoria.tipo}
-                                    required
-                                    />
+                            <FloatingLabel controlId="floatingSelect" label="Orgânico:">
+                                <Form.Select aria-label="Orgânico" id="organico" name="organico" required value={categoria.organico} onChange={manipularMudancas}>
+                                    <option value="orgânico">Orgânico</option>
+                                    <option value="não orgânico">Não Orgânico</option>
+                                </Form.Select>
                             </FloatingLabel>
-                            <Form.Control.Feedback type="invalid">Informe o tipo!</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
-                    <Col md={5}>
+                    <Col md={6}>
                         <Form.Group>
-                            <FloatingLabel
-                                label="Preco"
-                                className="mb-3"
-                            >
-                                <Form.Control 
-                                    type="number" 
-                                    placeholder="Nº" 
-                                    id="preco" 
-                                    name="preco" 
-                                    onChange={manipularMudancas}
-                                    value={categoria.preco}
-                                    required
-                                    />
-                            </FloatingLabel>
-                            <Form.Control.Feedback type="invalid">Informe o preço!</Form.Control.Feedback>
+                            <Form.Check
+                                type="switch"
+                                id="ativa"
+                                name="ativa"
+                                label="Ativa"
+                                checked={categoria.ativa}
+                                onChange={manipularMudancas}
+                            />
                         </Form.Group>
                     </Col>
                 </Row>
-                
+                {/* Adicione outros campos específicos da categoria, se necessário */}
                 <Row>
                     <Col md={6} offset={5} className="d-flex justify-content-end">
-                        <Button type="submit" variant={"primary"}>{props.modoEdicao ? "Alterar":"Cadastrar"}</Button>
+                        <Button type="submit" variant={props.modoEdicao ? "warning":"primary"}>{props.modoEdicao ? "Alterar":"Cadastrar"}</Button>
                     </Col>
                     <Col md={6} offset={5}>
-                        <Button type="button" variant={"secondary"} onClick={() => {
-                                props.exibirFormulario(false)
-                            }
-                        }>Voltar</Button>
+                        <Button type="button" variant={"secondary"} onClick={()=>{
+                            props.setModoEdicao(false);
+                            props.setCategoriaParaEdicao(categoriaVazia); 
+                            props.setExibirFormulario(false)
+                        }
+                    }>Voltar</Button>
                     </Col>
                 </Row>
             </Form>

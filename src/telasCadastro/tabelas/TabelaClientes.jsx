@@ -17,22 +17,22 @@ export default function TabelaClientes(props) {
 
     }
 
-    /* function verificaCliente(cliente){
-        props.listaClientes(cliente);
-        let i =0;
-        while(i<listaClientes.length && cliente!==listaClientes[i].cliente)
+    /* function verificaCliente(cliente) {
+        const listaClientes = props.listaClientes(); // Certifique-se de que props.listaClientes() retorna a lista corretamente
+        let i = 0;
+    
+        while (i < listaClientes.length && cliente !== listaClientes[i].cliente)
             i++;
-        if(i!=listaClientes.length)
-        {
-            formValidado.classList.remove('was-valited');
+    
+        if (i !== listaClientes.length) {
+            // Se o cliente já existe na lista
             alert("Nome de cliente já existente!");
             return true;
-        }
-        else    
+        } else {
+            // Se o cliente não existe na lista
             return false;
-    
+        }
     } */
-    
     
 
 

@@ -19,14 +19,23 @@ export default function FormCadFornecedor(props) {
     }
 
     function manipularSubmissao(e){
+        var teste = 0;
         const form = e.currentTarget; 
         if (form.checkValidity()){
-
+    
             if(!props.modoEdicao){
-                props.setListaFornecedores([...props.listaFornecedores,fornecedor]);
-                props.setMensagem('Fornecedor incluído com sucesso');
-                props.setTipoMensagem('success');
-                props.setMostrarMensagem(true);
+                for(var i = 0; i < props.listaFornecedores.length; i++)
+                    if (props.listaFornecedores[i].cnpj === fornecedor.cnpj)
+                        teste = teste + 1;
+                if (teste === 0){
+                    props.setListaFornecedores([...props.listaFornecedores,fornecedor]);
+                    props.setMensagem('Fornecedor incluído com sucesso');
+                    props.setTipoMensagem('success');
+                    props.setMostrarMensagem(true);
+                }
+                    
+                else
+                    alert("Impossivel cadastrar fornecedores com o mesmo cnpj!");
             }
             else{
 

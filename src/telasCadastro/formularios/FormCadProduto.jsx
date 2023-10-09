@@ -22,31 +22,40 @@ export default function FormCadProduto(props) {
         setProduto({...produto,[componente.name]:componente.value});
     }
 
-    function manipularSubmissao(e) {
-        const form = e.currentTarget;
-        if(form.checkValidity()) {
-            //mandar os dados para o backend
+    function manipularSubmissao(e){
+        var teste = 0;
+        const form = e.currentTarget; 
+        if (form.checkValidity()){
+    
             if(!props.modoEdicao){
-                props.setListaProdutos([...props.listaProdutos,produto]);
-                props.setMensagem('Produto cadastrado com sucesso');
-                props.setTipoMensagem('sucesso');
-                props.setMostrarMensagem(true);
+                for(var i = 0; i < props.listaProdutos.length; i++)
+                    if (props.listaProdutos[i].id === produto.id)
+                        teste = teste + 1;
+                if (teste === 0){
+                    props.setListaProdutos([...props.listaProdutos,produto]);
+                    props.setMensagem('Produto incluído com sucesso');
+                    props.setTipoMensagem('success');
+                    props.setMostrarMensagem(true);
+                }
+                    
+                else
+                    alert("Impossivel cadastrar produtos com o mesmo id!");
             }
             else{
-                //alterar os dados do produto (filtra e adiciona)
-                props.setListaProdutos([...props.listaProdutos.filter((itemProduto)=>itemProduto.id !== produto.id),produto]);
+
+                props.setListaProdutos([...props.listaProduos.filter((itemProduto)=>itemProduto.id !== produto.id),produto]);
                 props.setModoEdicao(false);
-                props.setProdutoParaEdicao(produtoVazio);
+                props.setProdutoParaEdicao(produtoVazio);                
             }
-            setProduto(produtoVazio); //ou sair da tela de formProduto
-            setFormValidado(false);   
+            setProduto(produtoVazio); 
+            setFormValidado(false);
         }
-        else {
+        else{
             setFormValidado(true);
         }
+
         e.stopPropagation();
         e.preventDefault();
-        
     }
     return(
         <Container>
