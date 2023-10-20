@@ -7,7 +7,6 @@ import TelaMensagem from "./TelaMensagem";
 
 export default function TelaCadastroCliente(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
-    const [listaClientes, setListaClientes] = useState([]);
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagem, setMensagem] = useState("");
     const [tipoMensagem, setTipoMensagem] = useState("");
@@ -36,9 +35,7 @@ export default function TelaCadastroCliente(props) {
                     {
                         //dinâmica em que o usuário irá alternar entre o formulário de cadastro
                         //e a visualização do registros já cadastrados.
-                        exibirFormulario ? <FormCadCliente exibirFormulario={setExibirFormulario}
-                            listaClientes={listaClientes}
-                            setListaClientes={setListaClientes}
+                            exibirFormulario ? <FormCadCliente exibirFormulario={setExibirFormulario}
                             clienteParaEdicao={clienteParaEdicao}
                             setClienteParaEdicao={setClienteParaEdicao}
                             modoEdicao={modoEdicao}
@@ -49,8 +46,6 @@ export default function TelaCadastroCliente(props) {
                         />
                             :
                             <TabelaClientes exibirFormulario={setExibirFormulario}
-                                listaClientes={listaClientes}
-                                setListaClientes={setListaClientes}
                                 clienteParaEdicao={clienteParaEdicao}
                                 setClienteParaEdicao={setClienteParaEdicao}
                                 modoEdicao={modoEdicao}

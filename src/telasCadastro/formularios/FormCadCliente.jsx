@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Button, Container, Form, Row, Col, FloatingLabel } from "react-bootstrap";
+import { useSelector, useDispatch} from 'react-redux';
+import { adicionar, atualizar} from '../../redux/clienteReducer';
+
 export default function FormCadCliente(props) {
-    //os atributos deste objeto devem estar associados aos inputs do formulários
+    
     const clienteVazio = {
         cpf:'',
         nome:'',
@@ -15,7 +18,9 @@ export default function FormCadCliente(props) {
     const estadoInicialCliente = props.clienteParaEdicao;
     const [cliente, setCliente] = useState(estadoInicialCliente);
     const [formValidado, setFormValidado] = useState(false);
-
+    const {status,mensagem,listaClientes} = useSelector((state)=>state.cliente);
+    const dispatch = useDispatch();
+    
     function manipularMudancas(e){
         const componente = e.currentTarget;
         console.log(componente.value)
@@ -28,11 +33,11 @@ export default function FormCadCliente(props) {
         if (form.checkValidity()){
     
             if(!props.modoEdicao){
-                for(var i = 0; i < props.listaClientes.length; i++)
-                    if (props.listaClientes[i].cpf === cliente.cpf)
+                for(var i = 0; i < listaClientes.length; i++)
+                    if (listaClientes[i].cpf === cliente.cpf)
                         teste = teste + 1;
                 if (teste === 0){
-                    props.setListaClientes([...props.listaClientes,cliente]);
+                    dispatch(adicionar(cliente));
                     props.setMensagem('Cliente incluído com sucesso');
                     props.setTipoMensagem('success');
                     props.setMostrarMensagem(true);
@@ -42,11 +47,11 @@ export default function FormCadCliente(props) {
                     alert("Impossivel cadastrar clientes com o mesmo cpf!");
             }
             else{
-                //alterar os dados do cliente (filtra e adiciona)
 
-                props.setListaClientes([...props.listaClientes.filter((itemCliente)=>itemCliente.cpf !== cliente.cpf),cliente]);
+                dispatch(atualizar(cliente));
                 props.setModoEdicao(false);
                 props.setClienteParaEdicao(clienteVazio);                
+            
             }
             setCliente(clienteVazio); 
             setFormValidado(false);

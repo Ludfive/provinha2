@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Button, Container, Form, Row, Col, FloatingLabel } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { atualizar,adicionar } from "../../redux/fornecedorReducer";
+
 export default function FormCadFornecedor(props) {
-    //os atributos deste objeto devem estar associados aos inputs do formulários
+
     const fornecedorVazio = {
         nome:'',
         cnpj:'',
@@ -11,6 +14,8 @@ export default function FormCadFornecedor(props) {
     const estadoInicialFornecedor = props.fornecedorParaEdicao;
     const [fornecedor, setFornecedor] = useState(estadoInicialFornecedor);
     const [formValidado, setFormValidado] = useState(false);
+    const {status,mensagem,listaFornecedores} = useSelector(state=>state.fornecedor);
+    const dispatch = useDispatch();
 
     function manipularMudancas(e){
         const componente = e.currentTarget;
@@ -28,7 +33,7 @@ export default function FormCadFornecedor(props) {
                     if (props.listaFornecedores[i].cnpj === fornecedor.cnpj)
                         teste = teste + 1;
                 if (teste === 0){
-                    props.setListaFornecedores([...props.listaFornecedores,fornecedor]);
+                    dispatch(adicionar(fornecedor));
                     props.setMensagem('Fornecedor incluído com sucesso');
                     props.setTipoMensagem('success');
                     props.setMostrarMensagem(true);
@@ -39,7 +44,7 @@ export default function FormCadFornecedor(props) {
             }
             else{
 
-                props.setListaFornecedores([...props.listaFornecedores.filter((itemFornecedor)=>itemFornecedor.cnpj !== fornecedor.cnpj),fornecedor]);
+                dispatch(atualizar(fornecedor));
                 props.setModoEdicao(false);
                 props.setFornecedorParaEdicao(fornecedorVazio);                
             }

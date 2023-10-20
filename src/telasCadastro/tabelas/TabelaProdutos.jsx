@@ -1,11 +1,14 @@
 import { Button, Container, Table } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { remover } from "../../redux/produtoReducer";
 
 export default function TabelaProdutos(props) {
+    const {status,mensagem,listaProdutos} = useSelector(state=>state.produto);
+    const dispatch = useDispatch();
+    
     function excluirProduto(produto) {
         if (window.confirm('Deseja excluir esse produto?')) {
-            props.setListaProdutos(
-                props.listaProdutos.filter((itemLista => itemLista.nome !== produto.nome))
-            );
+            dispatch(remover(produto));
         }
     }
 
@@ -34,7 +37,7 @@ export default function TabelaProdutos(props) {
                 </thead>
                 <tbody>
                     {
-                        props.listaProdutos.map((produto) => {
+                        listaProdutos.map((produto) => {
                             return (<tr key={produto.id}>
                                 <td>{produto.nome}</td>
                                 <td>{produto.id}</td>

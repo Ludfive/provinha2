@@ -1,11 +1,14 @@
 import { Button, Container, Table } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { remover } from "../../redux/fornecedorReducer";
 
 export default function TabelaFornecedores(props) {
+    const {status,mensagem,listaFornecedores} = useSelector(state=>state.produto);
+    const dispatch = useDispatch();
+    
     function excluirFornecedor(fornecedor) {
         if (window.confirm('Deseja realmente excluir esse fornecedor?')) {
-            props.setListaFornecedores(
-                props.listaFornecedores.filter((itemLista => itemLista.cnpj !== fornecedor.cnpj))
-            );
+            dispatch(remover(fornecedor));
         }
     }
 
@@ -35,7 +38,7 @@ export default function TabelaFornecedores(props) {
                 </thead>
                 <tbody>
                     {
-                        props.listaFornecedores.map((fornecedor) => {
+                        listaFornecedores.map((fornecedor) => {
                             return (<tr key={fornecedor.cnpj}>
                                 <td>{fornecedor.cnpj}</td>
                                 <td>{fornecedor.nome}</td>

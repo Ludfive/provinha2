@@ -1,11 +1,13 @@
 import { Button, Container, Table } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { remover } from "../../redux/clienteReducer";
 
 export default function TabelaClientes(props) {
+    const {status,mensagem,listaClientes} = useSelector(state=>state.cliente);
+    const dispatch = useDispatch();
     function excluirCliente(cliente) {
         if (window.confirm('Deseja realmente excluir esse cliente?')) {
-            props.setListaClientes(
-                props.listaClientes.filter((itemLista => itemLista.cpf !== cliente.cpf))
-            );
+            dispatch(remover(cliente));
         }
     }
 
@@ -16,24 +18,6 @@ export default function TabelaClientes(props) {
         props.exibirFormulario(true);
 
     }
-
-    /* function verificaCliente(cliente) {
-        const listaClientes = props.listaClientes(); // Certifique-se de que props.listaClientes() retorna a lista corretamente
-        let i = 0;
-    
-        while (i < listaClientes.length && cliente !== listaClientes[i].cliente)
-            i++;
-    
-        if (i !== listaClientes.length) {
-            // Se o cliente já existe na lista
-            alert("Nome de cliente já existente!");
-            return true;
-        } else {
-            // Se o cliente não existe na lista
-            return false;
-        }
-    } */
-    
 
 
     return (
@@ -55,7 +39,7 @@ export default function TabelaClientes(props) {
                 </thead>
                 <tbody>
                     {
-                        props.listaClientes.map((cliente) => {
+                        listaClientes.map((cliente) => {
                             return (<tr key={cliente.cpf}>
                                 <td>{cliente.cpf}</td>
                                 <td>{cliente.nome}</td>

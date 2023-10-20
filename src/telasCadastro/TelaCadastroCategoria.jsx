@@ -6,7 +6,6 @@ import { useState } from "react";
 
 export default function TelaCadastroCategoria(props) {
     const [exibirFormulario, setExibirFormulario] = useState(false);
-    const [listaCategorias, setListaCategorias] = useState([]);
     const [categoriaParaEdicao, setCategoriaParaEdicao] = useState({
         id: '',
         nome: '',
@@ -23,8 +22,6 @@ export default function TelaCadastroCategoria(props) {
                 {
                     exibirFormulario ? <FormCadCategorias 
                                             setExibirFormulario={setExibirFormulario} 
-                                            listaCategorias={listaCategorias}
-                                            setListaCategorias={setListaCategorias}
                                             setCategoriaParaEdicao={setCategoriaParaEdicao}
                                             categoriaParaEdicao={categoriaParaEdicao}
                                             modoEdicao={modoEdicao}
@@ -32,8 +29,6 @@ export default function TelaCadastroCategoria(props) {
                                         /> 
                                     : <TabelaCategorias 
                                             setExibirFormulario={setExibirFormulario} 
-                                            listaCategorias={listaCategorias}
-                                            setListaCategorias={setListaCategorias}
                                             categoriaParaEdicao={categoriaParaEdicao}
                                             setCategoriaParaEdicao={setCategoriaParaEdicao}
                                             modoEdicao={modoEdicao}

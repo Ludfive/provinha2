@@ -1,5 +1,7 @@
 import { Button, Container, Form, Row, Col, FloatingLabel } from "react-bootstrap";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { atualizar,adicionar } from "../../redux/categoriaReducer";
 
 export default function FormCadCategorias(props) {
     const categoriaVazia = {
@@ -14,6 +16,9 @@ export default function FormCadCategorias(props) {
     const estadoInicialCategoria = props.categoriaParaEdicao;
     const [categoria, setCategoria] = useState(estadoInicialCategoria);
     const [formValidado, setFormValidado] = useState(false);
+    const {status,mensagem,listaCategorias} = useSelector(state=>state.categoria);
+    const dispatch = useDispatch();
+
 
     function manipularMudancas(evento) {
         const componente = evento.currentTarget;
@@ -25,13 +30,11 @@ export default function FormCadCategorias(props) {
         const form = evento.currentTarget;
         if (form.checkValidity()) {
             if (!props.modoEdicao) {
-                props.setListaCategorias([...props.listaCategorias, categoria]);
+                dispatch(adicionar(categoria));
                 alert("Categoria cadastrada com sucesso!");
             } else {
-                props.setListaCategorias([
-                    ...props.listaCategorias.filter((itemCategoria) => itemCategoria.id !== categoria.id),
-                    categoria
-                ]);
+                
+                dispatch(atualizar(categoria));
                 props.setModoEdicao(false);
                 props.setCategoriaParaEdicao(categoriaVazia);
                 alert("Categoria alterada com sucesso!");
